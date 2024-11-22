@@ -1,3 +1,4 @@
+import math
 import flet as ft
 
 
@@ -47,14 +48,23 @@ class CalculatorApp(ft.Container):
                 ft.Row(controls=[self.result], alignment="end"),
                 ft.Row(
                     controls=[
-                        ExtraActionButton(
-                            text="AC", button_clicked=self.button_clicked
-                        ),
-                        ExtraActionButton(
-                            text="+/-", button_clicked=self.button_clicked
-                        ),
+                        ExtraActionButton(text="+/-", button_clicked=self.button_clicked),
                         ExtraActionButton(text="%", button_clicked=self.button_clicked),
-                        ActionButton(text="/", button_clicked=self.button_clicked),
+                        ExtraActionButton(text="/", button_clicked=self.button_clicked),
+                        ExtraActionButton(text="log", button_clicked=self.button_clicked),
+                    ]
+                ),
+                ft.Row(
+                    controls=[
+                        ExtraActionButton(text="sin", button_clicked=self.button_clicked),
+                        ExtraActionButton(text="cos", button_clicked=self.button_clicked),
+                        ExtraActionButton(text="tan", button_clicked=self.button_clicked),
+                        ExtraActionButton(text="√", button_clicked=self.button_clicked),
+                    ]
+                ),
+                ft.Row(
+                    controls=[
+                        ExtraActionButton(text="AC", button_clicked=self.button_clicked),
                     ]
                 ),
                 ft.Row(
@@ -131,11 +141,38 @@ class CalculatorApp(ft.Container):
         elif data in ("+/-"):
             if float(self.result.value) > 0:
                 self.result.value = "-" + str(self.result.value)
-
+                
             elif float(self.result.value) < 0:
                 self.result.value = str(
                     self.format_number(abs(float(self.result.value)))
                 )
+                
+        elif data == "sin":
+            self.result.value = self.format_number(
+                math.sin(math.radians(float(self.result.value)))
+            )
+            
+        elif data == "cos":
+            self.result.value = self.format_number(
+                math.cos(math.radians(float(self.result.value)))
+            )
+            
+        elif data == "tan":
+            self.result.value = self.format_number(
+                math.tan(math.radians(float(self.result.value)))
+            )
+            
+        elif data == "√":
+            if float(self.result.value) < 0:
+                self.result.value = "Error"
+            else:
+                self.result.value = self.format_number(math.sqrt(float(self.result.value)))
+                
+        elif data == "log":
+            if float(self.result.value) <= 0:
+                self.result.value = "Error"
+            else:
+                self.result.value = self.format_number(math.log10(float(self.result.value)))
 
         self.update()
 
